@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+#root {
+  margin: 0 auto;
+
+}
+
+
+.glow {
+  @apply text-rose-100;
+
+  text-shadow: 0 0 5pt honeydew,
+    0 0 2.5pt honeydew,
+    0 0 1pt honeydew;
+}
+
+.img-glow {
+  box-shadow: 0 0 10pt 5pt red;
+
+}
+
+.animate-clip {
+  animation: color-hue 1200ms linear infinite;
+}
+
+
+@keyframes color-hue {
+  0%,
+  100% {
+    filter: hue-rotate(-50deg);
+  }
+
+  50% {
+    filter: hue-rotate(180deg);
+  }
+}
+
+.anim-bounce {
+  animation: bounce 2s linear infinite;
+}
+@keyframes bounce {
+ 0%,100% {
+    transform: translateX(-100%);
+  }
+
+  50% {
+    transform: translateX(100%);
+  }
+}
+
+.anime-hue {
+  animation: hue-rotate 5s linear infinite;
+}
+@keyframes hue-rotate {
+  0% {
+    filter: hue-rotate(0deg) blur(72px);
+  }
+  100% {
+    filter: hue-rotate(360deg) blur(72px);
+  }
+}
