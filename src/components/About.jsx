@@ -52,7 +52,7 @@ const profileData = [
 function About() {
   return (
     <div className="min-h-screen pt-28 max-w-4xl mx-auto">
-      <Title color="bg-orange-500" text="Meet the team" />
+      {/* <Title color="bg-orange-500" text="Meet the team" /> */}
       <div className="flex flex-col md:grid grid-cols-2 md:justify-center flex-wrap gap-10 md:px-16 justify-center my-16">
         {profileData.map(
           (ele, id) =>

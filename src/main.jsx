@@ -48,10 +48,10 @@ const routeConfig = createBrowserRouter([
         path: "/contact",
         element: <Contact />,
       },
-      {
-        path: "/meet-the-team",
-        element: <About />,
-      },
+      // {
+      //   path: "/meet-the-team",
+      //   element: <About />,
+      // },
     ],
   },
   {

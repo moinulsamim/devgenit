@@ -23,11 +23,11 @@ export default function Navbar() {
       href: "/project",
       active: false,
     },
-    {
-      name: "Meet us",
-      href: "/meet-the-team",
-      active: false,
-    },
+    // {
+    //   name: "Meet us",
+    //   href: "/meet-the-team",
+    //   active: false,
+    // },
   ]);
   const [selectedTab, setSelectedTab] = useState(
     localStorage.getItem("curTab") || "Home"

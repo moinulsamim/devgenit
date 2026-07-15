@@ -3,15 +3,37 @@ import root from "../assets/root.png";
 import chem from "../assets/chemigen.jpeg";
 import mathflix from "../assets/mathflix.png";
 import ground from "../assets/ground.png";
+import skillshikho from "../assets/skillshikho.png";
+import falconyx from "../assets/falconyx.png";
+import acs from "../assets/acs.png";
 
 function Clients() {
   const clients = [
+    {
+      src: falconyx,
+      link: "https://falconyxproperties.com/",
+      hasBg: false,
+    },
+    {
+      src: skillshikho,
+      link: "https://skillshikho.com/",
+      hasBg: false,
+    },
+    {
+      src: acs,
+      link: "https://acsduyouthsummit2025.org/",
+      hasBg: false,
+    },
     { src: chem, link: "https://chemgenie.app/", hasBg: false },
-    { src: mathflix, link: "#", hasBg: true },
+
     {
       src: ground,
-      link: "https://groundwaterltd.com/",
+      link: "https://groundwaterltd.com.bd/",
       hasBg: false,
+    },
+    { src: mathflix,
+      link: "https://www.facebook.com/profile.php?id=61564442487543", 
+      hasBg: true ,
     },
     {
       src: root,
@@ -52,7 +74,7 @@ function Clients() {
   };
   return (
     <div className="my-48">
-      <Title text="Our partners" color="bg-blue-500" />
+      <Title text="Our clients" color="bg-blue-500" />
 
       <div className="flex flex-wrap gap-10 items-center justify-center  bg-slate-800/10 ring-1 ring-blue-200/20 rounded-2xl p-20 max-w-7xl mx-auto">
         {clients.map((client, id) => (

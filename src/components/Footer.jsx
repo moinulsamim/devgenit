@@ -63,7 +63,7 @@ export default function Footer() {
                 <p className="font-medium text-gray-100">Company</p>
 
                 <ul className="mt-6 space-y-4 text-sm text-gray-400">
-                  <li>
+                  {/* <li>
                     <a
                       href="/meet-the-team"
                       className=" transition hover:opacity-75"
@@ -71,7 +71,7 @@ export default function Footer() {
                       {" "}
                       Meet the Team{" "}
                     </a>
-                  </li>
+                  </li> */}
 
                   <li>
                     <a href="#" className=" transition hover:opacity-75">
