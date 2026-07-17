@@ -1,118 +1,145 @@
 import React, { useEffect } from "react";
 import Title from "./Title";
-import webapp from "/service/webapp.png";
-import mobileapp from "/service/mobile.png";
-import design from "/service/design.png";
-import uiux from "/service/uiux.svg";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-// no pob
-const service = [
-  {
-    name: "Web Application",
+import {
+  Palette,
+  LayoutGrid,
+  Globe,
+  Smartphone,
+  Server,
+  Cloud,
+  ShoppingCart,
+  Layers,
+  ShieldCheck,
+} from "lucide-react";
 
-    det: "Our web application at DevGenit combines cutting-edge technology with seamless usability. From intuitive interfaces to lightning-fast performance, we're here to elevate your online journey.",
-    img: webapp,
-    color: "to-blue-500",
-    shadow: "shadow-blue-500/30",
+const services = [
+  {
+    name: "Graphic design",
+    det: "Brand identity, logo systems, and marketing visuals designed for consistency across every touchpoint.",
+    icon: Palette,
+    tags: ["Figma", "Illustrator"],
   },
   {
-    name: "Mobile Application",
-    det: "Empower your business with our mobile app development solutions. We create sleek, functional apps that seamlessly integrate into users' lives, delivering convenience and value on the go.",
-    img: mobileapp,
-    color: "to-pink-500",
-    shadow: "shadow-pink-500/30",
+    name: "UX / UI design",
+    det: "Wireframes to high-fidelity prototypes, built around real user flows and tested before a line of code is written.",
+    icon: LayoutGrid,
+    tags: ["Figma", "Prototyping"],
   },
   {
-    name: "Graphic Design",
-    det: "Unlock the power of visual storytelling with our graphic design services. From captivating logos to stunning brand identities, we bring your vision to life with creativity and precision.",
-    img: design,
-    color: "to-green-500",
-    shadow: "shadow-green-500/30",
+    name: "Web application",
+    det: "Responsive, fast-loading web apps built on modern frameworks with clean, maintainable code.",
+    icon: Globe,
+    tags: ["React", "Next.js"],
   },
   {
-    name: "UX/UI",
-    det: "Elevate user experiences with our UX/UI design expertise. We craft intuitive interfaces that engage and delight users, driving meaningful interactions and conversions.",
-    color: "to-yellow-500",
-    shadow: "shadow-yellow-500/30",
-    img: uiux,
+    name: "Mobile application",
+    det: "Native-feel iOS and Android apps, from a single codebase or fully native depending on what the product needs.",
+    icon: Smartphone,
+    tags: ["Flutter", "React native"],
+  },
+  {
+    name: "Backend and API",
+    det: "Secure, scalable APIs and server architecture built to handle real production traffic, not just demos.",
+    icon: Server,
+    tags: ["Node.js", "PostgreSQL"],
+  },
+  {
+    name: "Cloud and DevOps",
+    det: "CI/CD pipelines, containerized deployments, and infrastructure that scales without surprise downtime.",
+    icon: Cloud,
+    tags: ["AWS", "Docker"],
+  },
+  {
+    name: "E-commerce",
+    det: "Storefronts, checkout flows, and payment integrations built to convert, not just display products.",
+    icon: ShoppingCart,
+    tags: ["Shopify", "Stripe"],
+  },
+  {
+    name: "Custom software / SaaS",
+    det: "From MVP to multi-tenant platform, built around your business logic instead of a generic template.",
+    icon: Layers,
+    tags: ["Multi-tenant", "MVP"],
+  },
+  {
+    name: "Maintenance and support",
+    det: "Bug fixes, updates, and monitoring after launch, so the product you shipped keeps working.",
+    icon: ShieldCheck,
+    tags: ["SLA-based", "Monitoring"],
   },
 ];
-// root component ta kotto soto dekhso :)
+
 function NewService() {
   useEffect(() => {
-    const gsapcard = document.querySelectorAll(".gsap-card");
-    const img = document.querySelectorAll(".img");
-    let target = gsap.utils.toArray(gsapcard);
-    let imgT = gsap.utils.toArray(img);
     gsap.registerPlugin(ScrollTrigger);
-    target.forEach((g, id) => {
-      gsap.fromTo(
-        g,
-        {
-          x: id % 2 != 0 ? -200 : 200,
-          opacity: 0,
-          ease: "none",
-        },
-        {
-          scrollTrigger: {
-            trigger: g,
-            start: "top center",
-            end: "top center",
-            scrub: 2,
-          },
-          x: 0,
-          origin: "",
-          opacity: 1,
-          ease: "none",
-          duration: 2,
-          pointerEvents: "auto",
-        }
-      );
-    });
-    imgT.forEach((g, id) => {
-      gsap.fromTo(
-        g,
-        {
-          x: id % 2 != 0 ? 200 : -200,
-          y: 150,
-          opacity: 0,
-          ease: "none",
-          rotate: -45,
 
-          transformOrigin: "100% 100%",
+    const cards = gsap.utils.toArray(".service-card");
+
+    gsap.fromTo(
+      cards,
+      { y: 60, opacity: 0 },
+      {
+        scrollTrigger: {
+          trigger: "#service",
+          start: "top 80%",
+          end: "top 40%",
+          scrub: 1,
         },
-        {
-          scrollTrigger: {
-            trigger: g,
-            start: "top 1000px",
-            end: "top 700px",
-            scrub: 1,
-          },
-          x: 0,
-          y: 0,
-          opacity: 1,
-          ease: "none",
-          duration: 0.5,
-          rotate: 0,
-          pointerEvents: "auto",
-        }
-      );
-    });
+        y: 0,
+        opacity: 1,
+        stagger: 0.08,
+        ease: "power2.out",
+      }
+    );
+
+    gsap.fromTo(
+      ".service-header",
+      { y: 30, opacity: 0 },
+      {
+        scrollTrigger: {
+          trigger: "#service",
+          start: "top 85%",
+          end: "top 60%",
+          scrub: 1,
+        },
+        y: 0,
+        opacity: 1,
+        ease: "power2.out",
+      }
+    );
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
   }, []);
+
   return (
-    <div className="scroll-my-14" id="service">
-      <Title text="Services we provide" color="bg-purple-500" />
-      <div className="max-w-7xl grid lg:grid-cols-2 gap-5 mx-auto">
-        {service.map((ele, id) => (
+    <div className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-800/10 ring-1 ring-blue-200/20 rounded-2xl" id="service">
+      {/* Header */}
+      <div className="service-header max-w-7xl mx-auto text-center mb-14">
+        <p className="text-blue-500 text-sm font-semibold tracking-wide mb-3">
+          What we do
+        </p>
+        <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+          Services built to ship real products
+        </h2>
+        <p className="text-gray-400 max-w-2xl mx-auto text-base sm:text-lg">
+          From first pixel to production infrastructure, one team handles the full
+          stack.
+        </p>
+      </div>
+
+      {/* Grid */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {services.map((service, idx) => (
           <ServiceCard
-            key={id}
-            id={id}
-            message={ele.det}
-            title={ele.name}
-            imgSrc={ele.img}
-            color={ele.color}
-            shadow={ele.shadow}
+            key={idx}
+            title={service.name}
+            message={service.det}
+            Icon={service.icon}
+            tags={service.tags}
           />
         ))}
       </div>
@@ -120,40 +147,35 @@ function NewService() {
   );
 }
 
-// ekhon shuno, ei je card ta dekhso, emon 4ta hbe na 5ta?
-
-// reality....
-const ServiceCard = ({ title, message, imgSrc, color, shadow }) => {
+const ServiceCard = ({ title, message, Icon, tags }) => {
   return (
-    <div className="w-full my-14 md:my-4 relative text-wrap gsap-card">
-      <div
-        className={`relative px-10 overflow-hidden bg-gray-900 shadow-2xl ${shadow} pt-10 rounded-3xl lg:gap-x-20`}
-      >
-        {/* effect */}
-        <div
-          className={`absolute rounded-full w-96 h-96 scale-75 md:scale-125 -top-1/2 lg:-top-1/3 opacity-70 bg-gradient-to-tr blur-3xl from-purple-500/10 ${color} animate-pulse -left-20 `}
-        ></div>
-        <div className="mx-auto max-w-md text-center lg:mx-0 lg:py-14 lg:text-left">
-          <h2 className="text-3xl text-left font-bold tracking-tight text-white sm:text-4xl">
-            {title}
-          </h2>
-          <p className="my-6 text-sm sm:text-lg leading-8 text-gray-300 text-left">
-            {message}
-          </p>
-        </div>
-        {/* image */}
-        <div className="relative scale-75 h-48 lg:h-80 -mt-10">
- 
-          <img
-            className="img lg:absolute translate-x-1/2 lg:translate-x-0 left-0 -top-20 lg:w-[57rem] lg:max-w-none"
-            src={imgSrc}
-            alt="App screenshot"
-            width={1080}
-            height={1080}
-          />
-        </div>
+    <div className="service-card group relative bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl p-7 hover:border-[#3a3a3a] transition-colors duration-300">
+      {/* Icon */}
+      <div className="w-11 h-11 rounded-xl bg-[#111111] border border-[#2a2a2a] flex items-center justify-center text-blue-400 mb-5 group-hover:text-blue-300 transition-colors duration-300">
+        <Icon size={20} strokeWidth={2} />
+      </div>
+
+      {/* Content */}
+      <h3 className="text-white text-lg font-bold mb-3 leading-tight">
+        {title}
+      </h3>
+      <p className="text-gray-400 text-sm leading-relaxed mb-6">
+        {message}
+      </p>
+
+      {/* Tags */}
+      <div className="flex flex-wrap gap-2">
+        {tags.map((tag, i) => (
+          <span
+            key={i}
+            className="px-3 py-1 text-xs font-medium text-gray-300 bg-[#222222] border border-[#2a2a2a] rounded-full"
+          >
+            {tag}
+          </span>
+        ))}
       </div>
     </div>
   );
 };
+
 export default NewService;
