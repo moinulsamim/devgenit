@@ -16,7 +16,8 @@
     "react-dom": "^18.2.0",
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.23.1",
-    "swiper": "^11.2.8"
+    "swiper": "^11.2.8",
+    "lucide-react": "^latest-version"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
