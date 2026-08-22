@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Technology from "../components/Technology";
 import Service from "../components/Service";
 
-const Home = () => {
+export default function HomePage() {
   return (
     <div className="w-full my-32 px-6">
       <div className="mx-auto max-w-7xl">
@@ -16,5 +16,4 @@ const Home = () => {
       </div>
     </div>
   );
-};
-export default Home;
+}

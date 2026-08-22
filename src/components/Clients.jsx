@@ -1,4 +1,5 @@
 import Title from "./Title";
+import Image from "next/image";
 import root from "../assets/root.png";
 import chem from "../assets/chemigen.jpeg";
 import mathflix from "../assets/mathflix.png";
@@ -48,17 +49,13 @@ function Clients() {
           hasBg ? "bg-red-600 rounded-xl" : "bg-white"
         } flex justify-center items-center hover:-translate-y-2 transition-transform`}
       >
-        <img
+        <Image
           className="select-none px-2"
           src={src}
+          alt="Client logo"
           width={120}
           height={120}
           draggable={false}
-          onMouseDown={(e) => {
-            e.currentTarget.oncontextmenu = (e) => {
-              e.preventDefault();
-            };
-          }}
         />
         {link !== "#" && (
           <div className="absolute inset-0 rounded-xl transition-colors hover:bg-black/60 group-hover:opacity-100 opacity-0 flex justify-center items-center">

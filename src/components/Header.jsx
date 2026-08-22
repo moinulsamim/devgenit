@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useEffect } from "react";
-import dots from "/dots.png";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -46,13 +48,14 @@ function Header() {
 
   return (
     <div className="relative h-screen">
-      {dots && (
-        <img
-          className="pointer-events-none absolute opacity-5 top-0 left-1/2 -translate-x-1/2 w-screen max-w-screen-lg"
-          src={dots}
-          alt=""
-        />
-      )}
+      <Image
+        className="pointer-events-none absolute opacity-5 top-0 left-1/2 -translate-x-1/2 w-screen max-w-screen-lg"
+        src="/dots.png"
+        alt=""
+        width={1600}
+        height={900}
+        priority
+      />
 
       <div className="mx-auto -translate-y-32 max-w-7xl flex justify-center items-center h-full">
         <div className="absolute rounded-full w-60 h-60 opacity-70 bg-gradient-to-tr blur-3xl from-purple-500/10 to-purple-500 animate-pulse left-1/2 -translate-x-1/2"></div>
@@ -97,6 +100,5 @@ function Header() {
     </div>
   );
 }
-// ami emon dure dure effect korte chai
 
 export default Header;

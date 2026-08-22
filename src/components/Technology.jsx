@@ -1,10 +1,11 @@
+"use client";
+
 import React, { useEffect } from "react";
 import Title from "./Title";
 import { FaHtml5, FaFigma, FaCss3Alt, FaNodeJs, FaReact } from "react-icons/fa";
 import {
   BiLogoJavascript,
   BiLogoTailwindCss,
-  BiLogoFirebase,
 } from "react-icons/bi";
 
 import { RiNextjsFill } from "react-icons/ri";
@@ -26,7 +27,6 @@ function Technology() {
     { title: "NodeJs", icon: <FaNodeJs /> },
     { title: "NextJS", icon: <RiNextjsFill /> },
     { title: "ViteJS", icon: <SiVite /> },
-    { title: "Firebase", icon: <BiLogoFirebase /> },
     { title: "ReactJS", icon: <FaReact /> },
     { title: "TailwindCSS", icon: <BiLogoTailwindCss /> },
     { title: "Flutter", icon: <SiFlutter /> },

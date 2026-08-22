@@ -1,6 +1,6 @@
-import Project from "../components/Project";
+import Project from "../../components/Project";
 
-const ProjectPage = () => {
+export default function ProjectPage() {
   return (
     <div className="w-full my-32 px-6">
       <div className="mx-auto max-w-7xl">
@@ -8,5 +8,4 @@ const ProjectPage = () => {
       </div>
     </div>
   );
-};
-export default ProjectPage;
+}

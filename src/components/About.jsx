@@ -1,15 +1,11 @@
+import Image from "next/image";
 import Title from "./Title";
 import { FaFacebook, FaLinkedin } from "react-icons/fa";
-import turya from "/team/tb.png";
-import samim from "/team/samim.jpg";
-import khalid from "/team/khalid.jpg";
-import fatin from "/team/fatin.jpg";
-import julius from "/team/julius.jpg";
 
 const profileData = [
   {
     name: "MD. Moinul Hossain Samim",
-    photo: samim,
+    photo: "/team/samim.jpg",
     fbLink: "https://www.facebook.com/hossain.samim.1232",
     inLink: "https://www.linkedin.com/in/md-moinul-hossain-samim-686b77255/",
     stuff: "Founder & CEO",
@@ -17,7 +13,7 @@ const profileData = [
   },
   {
     name: "Julius Ahmed",
-    photo: julius,
+    photo: "/team/julius.jpg",
     fbLink: "https://www.facebook.com/lamp.post.5876",
     inLink: "https://www.linkedin.com/in/julius-ahmed-08880890/",
     stuff: "Chief Executive Officer (CEO)",
@@ -25,7 +21,7 @@ const profileData = [
   },
   {
     name: "Khalid Ahammed  (Uzzal)",
-    photo: khalid,
+    photo: "/team/khalid.jpg",
     fbLink: "https://www.facebook.com/khalid.ahammed.39",
     inLink: "https://www.linkedin.com/in/khalid-ahammed-170041234/",
     stuff: "Chief Operating Officer (COO)",
@@ -33,7 +29,7 @@ const profileData = [
   },
   {
     name: "Turya Biswas",
-    photo: turya,
+    photo: "/team/tb.png",
     fbLink: "https://facebook.com/Turya.Biswas.012",
     inLink: "https://www.linkedin.com/in/turya-biswas-31418527b/",
     stuff: "Chief Technology Officer (CTO)",
@@ -42,7 +38,7 @@ const profileData = [
 
   {
     name: "Fatin Shadab",
-    photo: fatin,
+    photo: "/team/fatin.jpg",
     fbLink: "https://www.facebook.com/fatin.shadab.1",
     inLink: "https://www.linkedin.com/in/fatin-shadab",
     stuff: "Director (R & D)",
@@ -76,7 +72,7 @@ const DevProfile = ({ name, photo, stuff, fb, inLink }) => {
     <div className="w-full h-fit mx-auto max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 group">
       <div className="flex justify-end px-4 pt-4"></div>
       <div className="flex flex-col items-center pb-10">
-        <img
+        <Image
           className="w-24 h-auto mb-3 rounded-full shadow-lg object-cover  group-hover:w-48 aspect-square transition-all"
           width={200}
           height={200}

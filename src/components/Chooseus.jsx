@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Title from "./Title";
 import fast from "../assets/fast.png";
 import customer from "../assets/customer.png";
@@ -9,7 +10,7 @@ const Card = ({ title, text, icon }) => {
   return (
     <div className="grid grid-cols-1 justify-center items-center w-full bg-blue-50/5 ring-1 ring-blue-200/20 transition-colors text-yeah-text px-5 py-2 mb-10 rounded-lg min-h-[350px]">
       <div className="w-36 mx-auto flex justify-center items-center text-center text-2xl rounded-full p-4">
-        <img src={icon} width={100} />
+        <Image src={icon} alt={title} width={100} height={100} />
       </div>
       <p className="font-semibold text-2xl capitalize text-center">{title}</p>
       <p className="font-light text-sm">{text}</p>

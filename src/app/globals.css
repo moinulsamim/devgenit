@@ -2,6 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0d111d;
+  font-family: var(--font-poppins), sans-serif;
+}
+
+nav,
+button.contact {
+  font-family: var(--font-work-sans), sans-serif;
+}
+
+.poppins-regular {
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.poppins-medium {
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.poppins-bold {
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+#header .glow-text {
+  text-shadow: 1px 1px 50pt #eb464fa4;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -9,9 +51,7 @@
 
 #root {
   margin: 0 auto;
-
 }
-
 
 .glow {
   @apply text-rose-100;
@@ -23,13 +63,11 @@
 
 .img-glow {
   box-shadow: 0 0 10pt 5pt red;
-
 }
 
 .animate-clip {
   animation: color-hue 1200ms linear infinite;
 }
-
 
 @keyframes color-hue {
   0%,
@@ -45,8 +83,10 @@
 .anim-bounce {
   animation: bounce 2s linear infinite;
 }
+
 @keyframes bounce {
- 0%,100% {
+  0%,
+  100% {
     transform: translateX(-100%);
   }
 
@@ -58,10 +98,12 @@
 .anime-hue {
   animation: hue-rotate 5s linear infinite;
 }
+
 @keyframes hue-rotate {
   0% {
     filter: hue-rotate(0deg) blur(72px);
   }
+
   100% {
     filter: hue-rotate(360deg) blur(72px);
   }

@@ -1,12 +1,16 @@
+"use client";
+
 import { useEffect } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import chemhl from "/projects/chem/hero-laptop.png";
-import chemres from "/projects/chem/res.png";
-import gwll from "/projects/gwl/laptop.png";
-import gwlres from "/projects/gwl/restrans.png";
 
-const projects = [chemhl, chemres, gwlres, gwll];
+const projects = [
+  { src: "/projects/chem/hero-laptop.png", alt: "Chem laptop view" },
+  { src: "/projects/chem/res.png", alt: "Chem responsive view" },
+  { src: "/projects/gwl/restrans.png", alt: "GWL responsive view" },
+  { src: "/projects/gwl/laptop.png", alt: "GWL laptop view" },
+];
 function Project() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -96,11 +100,11 @@ const ProjectCard = ({ project }) => {
     <div className="project-card">
       <div className="project-images grid grid-cols-1 lg:grid-cols-2 gap-5">
         {project.map((image, index) => (
-          <img
+          <Image
             className="card-img rounded-md w-full aspect-auto object-fill h-fit mx-auto bg-gradient-to-b from-transparent via-cyan-800/70"
             key={`laptop${index}`}
-            src={image}
-            alt={`${project.name} laptop view`}
+            src={image.src}
+            alt={image.alt}
             width={800}
             height={600}
           />

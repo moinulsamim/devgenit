@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FaFacebook, FaLinkedin } from "react-icons/fa6";
 import { MdEmail, MdLocationPin, MdPhone } from "react-icons/md";
 
@@ -13,7 +14,7 @@ export default function Footer() {
             <div>
               <div>
                 <p className="text-4xl poppins-medium text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-30% to-rose-600">
-                  <a href="/">DevGenit</a>
+                    <Link href="/">DevGenit</Link>
                 </p>
               </div>
               <div className="space-y-3 my-6">
@@ -87,9 +88,9 @@ export default function Footer() {
 
                 <ul className="mt-6 space-y-4 text-sm text-gray-400">
                   <li>
-                    <a href="/contact" className=" transition hover:opacity-75">
+                    <Link href="/contact" className=" transition hover:opacity-75">
                       Contact
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <a href="#" className=" transition hover:opacity-75">

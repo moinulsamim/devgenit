@@ -1,6 +1,6 @@
-import Service from "../components/Service";
+import Service from "../../components/Service";
 
-const ServicePage = () => {
+export default function ServicePage() {
   return (
     <div className="w-full my-32 px-6">
       <div className="mx-auto max-w-7xl">
@@ -8,5 +8,4 @@ const ServicePage = () => {
       </div>
     </div>
   );
-};
-export default ServicePage;
+}
