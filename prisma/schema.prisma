@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum BillingCycle {
+  WEEKLY
+  MONTHLY
+  YEARLY
+  NO_RESTRICTION
+}
+
+enum ServiceStatus {
+  ACTIVE
+  DUE_SOON
+  OVERDUE
+  BLOCKED
+}
+
+model Client {
+  id            String    @id @default(cuid())
+  name          String
+  company       String?
+  email         String    @unique
+  phone         String?
+  loginUsername String    @unique
+  passwordHash  String
+  services      Service[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Service {
+  id                   String        @id @default(cuid())
+  client               Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId             String
+  name                 String
+  amount               Decimal       @db.Decimal(10, 2)
+  billingCycle         BillingCycle
+  billingAnchorDay     Int?
+  billingAnchorMonth   Int?
+  status               ServiceStatus @default(ACTIVE)
+  nextDueDate          DateTime?
+  gracePeriodStartedAt DateTime?
+  payments             Payment[]
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  @@index([clientId])
+  @@index([status])
+}
+
+model Payment {
+  id                 String   @id @default(cuid())
+  service             Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  serviceId           String
+  amountPaid          Decimal @db.Decimal(10, 2)
+  paidOn              DateTime
+  periodStart         DateTime
+  periodEnd           DateTime
+  receiptFileUrl      String?
+  invoiceNumber       String   @unique
+  confirmedByAdminAt  DateTime @default(now())
+  createdAt           DateTime @default(now())
+
+  @@index([serviceId])
+}
+
+model AdminAuditLog {
+  id          String   @id @default(cuid())
+  action      String
+  targetType  String
+  targetId    String
+  details     Json?
+  performedAt DateTime @default(now())
+}
