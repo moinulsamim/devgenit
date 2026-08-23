@@ -1,8 +1,8 @@
-import Chooseus from "../components/Chooseus";
-import Clients from "../components/Clients";
-import Header from "../components/Header";
-import Technology from "../components/Technology";
-import Service from "../components/Service";
+import Chooseus from "../../components/Chooseus";
+import Clients from "../../components/Clients";
+import Header from "../../components/Header";
+import Technology from "../../components/Technology";
+import Service from "../../components/Service";
 
 export default function HomePage() {
   return (
