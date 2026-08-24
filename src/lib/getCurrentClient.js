@@ -1,3 +1,4 @@
+
 import { cookies } from 'next/headers';
 import { verifyClientToken } from './auth-edge';
 import { getPrisma } from './prisma';
@@ -10,12 +11,53 @@ export async function getCurrentClient() {
   if (!payload?.clientId || payload.role !== 'client') return null;
 
   const prisma = await getPrisma();
+
   const client = await prisma.client.findUnique({
     where: { id: payload.clientId },
-    include: {
+    select: {
+      id: true,
+      name: true,
+      company: true,
+      email: true,
+      phone: true,
+      loginUsername: true,
+      createdAt: true,
+      updatedAt: true,
+
       services: {
-        include: {
-          payments: { orderBy: { paidOn: 'desc' } },
+        orderBy: {
+          nextDueDate: 'asc',
+        },
+        select: {
+          id: true,
+          name: true,
+          amount: true,
+          billingCycle: true,
+          billingAnchorDay: true,
+          billingAnchorMonth: true,
+          status: true,
+          nextDueDate: true,
+          gracePeriodStartedAt: true,
+          createdAt: true,
+          updatedAt: true,
+
+          payments: {
+            orderBy: {
+              paidOn: 'desc',
+            },
+            select: {
+              id: true,
+              serviceId: true,
+              amountPaid: true,
+              paidOn: true,
+              periodStart: true,
+              periodEnd: true,
+              receiptFileUrl: true,
+              invoiceNumber: true,
+              confirmedByAdminAt: true,
+              createdAt: true,
+            },
+          },
         },
       },
     },
@@ -23,18 +65,18 @@ export async function getCurrentClient() {
 
   if (!client) return null;
 
-  // Prisma's Decimal fields are class instances, not plain numbers —
-  // React Server Components can't pass them to Client Components.
-  // Convert every Decimal field to a plain number before returning.
   return {
     ...client,
+
     services: client.services.map((service) => ({
       ...service,
       amount: Number(service.amount),
+
       payments: service.payments.map((payment) => ({
         ...payment,
         amountPaid: Number(payment.amountPaid),
       })),
     })),
-  }; 
+  };
 }
+
