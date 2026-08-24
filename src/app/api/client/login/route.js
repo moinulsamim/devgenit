@@ -7,8 +7,17 @@ const attempts = new Map();
 const MAX_ATTEMPTS = 5;
 const WINDOW_MS = 15 * 60 * 1000;
 
+// Constant-time defense: used when no client matches, so response timing
+// doesn't reveal whether the email exists. Generate your own once via
+// `bcrypt.hash('anything-random', 12)` and hardcode it here — do NOT
+// regenerate it per-request (that defeats the purpose) and do NOT reuse
+// this exact value in production, generate your own.
+const DUMMY_HASH = '$2b$12$E3SoSFYYU5BFs5yn2E/pHOSWPtce8tw84mMmsr7TkDDGUg3MQOsrK';
+
 function getIp(req) {
-  return req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
+  const fwd = req.headers.get('x-forwarded-for');
+  if (fwd) return fwd.split(',')[0].trim(); // first entry = original client
+  return req.headers.get('x-real-ip') || 'unknown';
 }
 
 function checkRateLimit(ip) {
@@ -30,22 +39,39 @@ export async function POST(req) {
     return NextResponse.json({ error: 'Too many failed attempts, try again later' }, { status: 429 });
   }
 
-  const body = await req.json();
-  const { username, password } = body || {};
+  const body = await req.json().catch(() => null);
+  const email = typeof body?.email === 'string' ? body.email.trim().toLowerCase() : '';
+  const password = typeof body?.password === 'string' ? body.password : '';
 
-  if (!username || !password) return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+  if (!email || !password) {
+    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+  }
 
   const prisma = await getPrisma();
-  const client = await prisma.client.findUnique({ where: { loginUsername: username } });
-  if (!client) return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+  const client = await prisma.client.findUnique({ where: { email } });
 
-  const ok = await verifyPassword(password, client.passwordHash);
-  if (!ok) return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+  // Always run bcrypt, even when no client was found, against a fixed
+  // dummy hash. This keeps response time ~constant whether the email
+  // exists or not, closing the enumeration timing side-channel.
+  const hashToCheck = client ? client.passwordHash : DUMMY_HASH;
+  const ok = await verifyPassword(password, hashToCheck);
+
+  if (!client || !ok) {
+    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+  }
 
   const token = signClientToken({ role: 'client', clientId: client.id });
   const cookieStore = await cookies();
   const host = new URL(req.url).hostname;
   const isSecure = process.env.NODE_ENV === 'production' && host !== 'localhost' && host !== '127.0.0.1';
-  cookieStore.set({ name: 'client_session', value: token, httpOnly: true, secure: isSecure, sameSite: 'strict', path: '/', maxAge: 24 * 60 * 60 });
+  cookieStore.set({
+    name: 'client_session',
+    value: token,
+    httpOnly: true,
+    secure: isSecure,
+    sameSite: 'strict',
+    path: '/',
+    maxAge: 24 * 60 * 60,
+  });
   return NextResponse.json({ success: true });
 }
