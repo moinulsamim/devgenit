@@ -70,10 +70,6 @@ body {
   .admin-page aside > div { display: none; }
   .admin-page aside nav a { justify-content: center; padding: .65rem .25rem; }
   .admin-page main { padding-left: 1rem; padding-right: 1rem; }
-  .client-page .client-rail { width: 4rem; }
-  .client-page .client-content { margin-left: 4rem; }
-  .client-page .client-rail .client-brand-text, .client-page .client-rail .client-support, .client-page .client-rail .client-nav-label, .client-page .client-rail .client-nav-text { display: none; }
-  .client-page .client-rail a { justify-content: center; }
 }
 
 nav,

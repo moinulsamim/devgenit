@@ -72,7 +72,7 @@ export default async function ClientPaymentsPage() {
                         <td className="p-4 client-muted">{payment.serviceName}</td>
                         <td className="p-4 client-muted">{formatDate(payment.paidOn)}</td>
                         <td className="p-4 font-semibold">
-                          ${Number(payment.amountPaid).toFixed(2)}
+                          ৳ {Number(payment.amountPaid).toFixed(2)}
                         </td>
                         <td className="p-4">
                           {payment.receiptFileUrl ? (
@@ -96,7 +96,7 @@ export default async function ClientPaymentsPage() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-3 mt-4">
-              <Summary title="Total on record" value={`$${total.toFixed(2)}`} />
+              <Summary title="Total on record" value={`৳ ${total.toFixed(2)}`} />
               <Summary title="Paid invoices" value={`${payments.length}`} />
               <Summary title="Payment rhythm" value="Active" />
             </div>
