@@ -16,6 +16,101 @@ const filters = [
   { key: 'BLOCKED', label: 'Blocked' },
 ];
 
+function ReportPayment({ service }) {
+  const [open, setOpen] = useState(false);
+  const [amount, setAmount] = useState(String(service.amount));
+  const [note, setNote] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [result, setResult] = useState(null); // 'success' | error string
+
+  async function submit() {
+    setSubmitting(true);
+    setResult(null);
+    try {
+      const response = await fetch(`/api/client/services/${service.id}/report-payment`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ amount, note }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Unable to submit');
+      setResult('success');
+    } catch (reason) {
+      setResult(reason.message);
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  if (result === 'success') {
+    return (
+      <div className="mt-4 border border-[#c7e6dd] bg-[#eefaf5] rounded-lg p-3 text-[10px] text-[#2c7a63]">
+        Thanks — we've received your report and will confirm it shortly.
+      </div>
+    );
+  }
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="mt-4 bg-[#202a3d] text-white text-[11px] font-semibold px-4 py-2 rounded-lg w-full sm:w-auto"
+      >
+       Complete the Payment 
+      </button>
+    );
+  }
+
+  return (
+    <div className="mt-4 border border-[#e5e1d8] rounded-lg p-3">
+      <p className="client-label mb-2">Report your payment</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <label className="text-[10px]">
+          Amount paid
+          <input
+            type="number"
+            step="0.01"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="mt-1 w-full p-2 rounded-lg border border-[#d6e2df] text-xs"
+          />
+        </label>
+        <label className="text-[10px]">
+          Note (optional)
+          <input
+            type="text"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            placeholder="e.g. paid via bank transfer"
+            className="mt-1 w-full p-2 rounded-lg border border-[#d6e2df] text-xs"
+          />
+        </label>
+      </div>
+      {result && result !== 'success' && (
+        <p className="text-[10px] text-red-600 mt-2">{result}</p>
+      )}
+      <div className="flex gap-2 mt-3">
+        <button
+          type="button"
+          disabled={submitting}
+          onClick={submit}
+          className="flex-1 sm:flex-none bg-[#202a3d] disabled:opacity-50 text-white text-[11px] font-semibold px-4 py-2 rounded-lg"
+        >
+          {submitting ? 'Submitting…' : 'Submit report'}
+        </button>
+        <button
+          type="button"
+          onClick={() => setOpen(false)}
+          className="text-[11px] text-slate-500 px-3"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function ServicesView({ services }) {
   const [filter, setFilter] = useState('ALL');
   const [expandedId, setExpandedId] = useState(null);
@@ -75,6 +170,8 @@ export default function ServicesView({ services }) {
           {filtered.map((service) => {
             const expanded = expandedId === service.id;
             const payments = service.payments || [];
+            const needsAttention = ['DUE_SOON', 'OVERDUE', 'BLOCKED'].includes(service.status);
+            const canReportPayment = service.billingCycle !== 'NO_RESTRICTION';
 
             return (
               <div key={service.id} className="client-card overflow-hidden">
@@ -132,12 +229,14 @@ export default function ServicesView({ services }) {
                       </div>
                     </div>
 
-                    {['DUE_SOON', 'OVERDUE', 'BLOCKED'].includes(service.status) && (
+                    {needsAttention && (
                       <div className="mt-4 border border-[#f0d9c9] bg-[#fff7ee] rounded-lg p-3 text-[10px] text-[#85583d]">
                         This service needs attention. Contact{' '}
                         <a href="mailto:connect@devgenit.com" className="underline">connect@devgenit.com</a> for help.
                       </div>
                     )}
+
+                    {canReportPayment && <ReportPayment service={service} />}
 
                     <div className="mt-5">
                       <p className="client-label mb-2">Payment history</p>

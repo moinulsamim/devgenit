@@ -11,5 +11,6 @@
 export type * from './models/Client.ts'
 export type * from './models/Service.ts'
 export type * from './models/Payment.ts'
+export type * from './models/PaymentClaim.ts'
 export type * from './models/AdminAuditLog.ts'
 export type * from './commonInputTypes.ts'

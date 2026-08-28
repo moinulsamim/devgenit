@@ -21,6 +21,12 @@ enum ServiceStatus {
   BLOCKED
 }
 
+enum ClaimStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+}
+
 model Client {
   id            String    @id @default(cuid())
   name          String
@@ -47,6 +53,7 @@ model Service {
   nextDueDate          DateTime?
   gracePeriodStartedAt DateTime?
   payments             Payment[]
+  paymentClaims        PaymentClaim[]
   createdAt            DateTime      @default(now())
   updatedAt            DateTime      @updatedAt
 
@@ -68,6 +75,22 @@ model Payment {
   createdAt           DateTime @default(now())
 
   @@index([serviceId])
+}
+
+model PaymentClaim {
+  id             String      @id @default(cuid())
+  service        Service     @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  serviceId      String
+  claimedAmount  Decimal     @db.Decimal(10, 2)
+  claimedForDate DateTime?
+  note           String?
+  status         ClaimStatus @default(PENDING)
+  createdAt      DateTime    @default(now())
+  resolvedAt     DateTime?
+  resolutionNote String?
+
+  @@index([serviceId])
+  @@index([status])
 }
 
 model AdminAuditLog {

@@ -41,7 +41,7 @@ body {
 
 /* Reference console geometry: fixed rail, compact centered workspace. */
 .admin-page { height: 100vh; overflow: hidden; }
-.admin-page > aside { position: fixed; inset: 0 auto 0 0; z-index: 20; width: 11rem !important; height: 100vh; overflow: hidden; padding: .85rem !important; }
+.admin-page > aside { position: fixed; inset: 0 auto 0 0; z-index: 20; width: 11rem !important; height: 100vh; overflow: hidden; padding: .85rem !important; transition: transform .3s ease; }
 .admin-page > section { min-width: 0; height: 100vh; margin-left: 11rem; overflow-y: auto; overflow-x: hidden; }
 .admin-page > section > header { height: 2.75rem; padding-left: 2.4rem; padding-right: 2.4rem; }
 .admin-page > section > main.max-w-6xl { max-width: 42rem !important; padding-left: 0; padding-right: 0; }
@@ -57,19 +57,32 @@ body {
 .client-page .client-label { color: #72908c; font-size: .58rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
 .client-page .client-status-active { background: #dceee8; color: #32796e; }
 .client-page .client-status-due { background: #f9eadb; color: #96613d; }
-.client-page .client-status-overdue { background: #fce2dd; color: #b54e43; }
-.client-page .client-status-blocked { background: #f8d8d5; color: #a63838; }
+.client-page .client-status-overdue { background: #fde0c2; color: #9a5a12; }
+.client-page .client-status-blocked { background: #e2e2de; color: #55554f; }
 
-@media (max-width: 640px) {
-  .admin-page aside { width: 4rem !important; padding: .65rem .45rem; }
-  .admin-page > section { margin-left: 4rem; }
-  .admin-page aside > a { justify-content: center; }
-  .admin-page aside > a > span:last-child,
-  .admin-page aside > p,
-  .admin-page aside nav a:not(:first-child) > :last-child,
-  .admin-page aside > div { display: none; }
-  .admin-page aside nav a { justify-content: center; padding: .65rem .25rem; }
-  .admin-page main { padding-left: 1rem; padding-right: 1rem; }
+@media (max-width: 1023px) {
+  .admin-page > aside {
+    width: 16rem !important;
+    padding: 1rem !important;
+    z-index: 40;
+    transform: translateX(-100%);
+  }
+  .admin-page > aside.admin-rail-open {
+    transform: translateX(0);
+  }
+  .admin-page > section {
+    margin-left: 0 !important;
+  }
+  .admin-page > section > header {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .admin-page > section > main.max-w-6xl,
+  .admin-page > section > main.max-w-3xl,
+  .admin-page > section > main.max-w-5xl {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 nav,

@@ -54,6 +54,7 @@ export const ModelName = {
   Client: 'Client',
   Service: 'Service',
   Payment: 'Payment',
+  PaymentClaim: 'PaymentClaim',
   AdminAuditLog: 'AdminAuditLog'
 } as const
 
@@ -120,6 +121,21 @@ export const PaymentScalarFieldEnum = {
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const PaymentClaimScalarFieldEnum = {
+  id: 'id',
+  serviceId: 'serviceId',
+  claimedAmount: 'claimedAmount',
+  claimedForDate: 'claimedForDate',
+  note: 'note',
+  status: 'status',
+  createdAt: 'createdAt',
+  resolvedAt: 'resolvedAt',
+  resolutionNote: 'resolutionNote'
+} as const
+
+export type PaymentClaimScalarFieldEnum = (typeof PaymentClaimScalarFieldEnum)[keyof typeof PaymentClaimScalarFieldEnum]
 
 
 export const AdminAuditLogScalarFieldEnum = {

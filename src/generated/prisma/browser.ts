@@ -33,6 +33,11 @@ export type Service = Prisma.ServiceModel
  */
 export type Payment = Prisma.PaymentModel
 /**
+ * Model PaymentClaim
+ * 
+ */
+export type PaymentClaim = Prisma.PaymentClaimModel
+/**
  * Model AdminAuditLog
  * 
  */

@@ -400,6 +400,7 @@ export const ModelName = {
   Client: 'Client',
   Service: 'Service',
   Payment: 'Payment',
+  PaymentClaim: 'PaymentClaim',
   AdminAuditLog: 'AdminAuditLog'
 } as const
 
@@ -416,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "client" | "service" | "payment" | "adminAuditLog"
+    modelProps: "client" | "service" | "payment" | "paymentClaim" | "adminAuditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -642,6 +643,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PaymentClaim: {
+      payload: Prisma.$PaymentClaimPayload<ExtArgs>
+      fields: Prisma.PaymentClaimFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentClaimFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentClaimPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentClaimFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentClaimPayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentClaimFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentClaimPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentClaimFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentClaimPayload>
+        }
+        findMany: {
+          args: Prisma.PaymentClaimFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentClaimPayload>[]
+        }
+        create: {
+          args: Prisma.PaymentClaimCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentClaimPayload>
+        }
+        createMany: {
+          args: Prisma.PaymentClaimCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PaymentClaimCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentClaimPayload>[]
+        }
+        delete: {
+          args: Prisma.PaymentClaimDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentClaimPayload>
+        }
+        update: {
+          args: Prisma.PaymentClaimUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentClaimPayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentClaimDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentClaimUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PaymentClaimUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentClaimPayload>[]
+        }
+        upsert: {
+          args: Prisma.PaymentClaimUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentClaimPayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentClaimAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentClaim>
+        }
+        groupBy: {
+          args: Prisma.PaymentClaimGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentClaimGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentClaimCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentClaimCountAggregateOutputType> | number
+        }
+      }
+    }
     AdminAuditLog: {
       payload: Prisma.$AdminAuditLogPayload<ExtArgs>
       fields: Prisma.AdminAuditLogFieldRefs
@@ -804,6 +879,21 @@ export const PaymentScalarFieldEnum = {
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
+export const PaymentClaimScalarFieldEnum = {
+  id: 'id',
+  serviceId: 'serviceId',
+  claimedAmount: 'claimedAmount',
+  claimedForDate: 'claimedForDate',
+  note: 'note',
+  status: 'status',
+  createdAt: 'createdAt',
+  resolvedAt: 'resolvedAt',
+  resolutionNote: 'resolutionNote'
+} as const
+
+export type PaymentClaimScalarFieldEnum = (typeof PaymentClaimScalarFieldEnum)[keyof typeof PaymentClaimScalarFieldEnum]
+
+
 export const AdminAuditLogScalarFieldEnum = {
   id: 'id',
   action: 'action',
@@ -944,6 +1034,20 @@ export type EnumServiceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'ServiceStatus[]'
  */
 export type ListEnumServiceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ServiceStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ClaimStatus'
+ */
+export type EnumClaimStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ClaimStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ClaimStatus[]'
+ */
+export type ListEnumClaimStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ClaimStatus[]'>
     
 
 
@@ -1128,6 +1232,7 @@ export type GlobalOmitConfig = {
   client?: Prisma.ClientOmit
   service?: Prisma.ServiceOmit
   payment?: Prisma.PaymentOmit
+  paymentClaim?: Prisma.PaymentClaimOmit
   adminAuditLog?: Prisma.AdminAuditLogOmit
 }
 

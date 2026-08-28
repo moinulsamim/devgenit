@@ -7,7 +7,17 @@ import { badRequest, readJson, requireAdmin, unauthorized } from '../../../../li
 export async function GET() {
   if (!await requireAdmin()) return unauthorized();
   const prisma = await getPrisma();
-  const clients = await prisma.client.findMany({ include: { services: { include: { payments: true } } }, orderBy: { name: 'asc' } });
+  const clients = await prisma.client.findMany({
+    include: {
+      services: {
+        include: {
+          payments: true,
+          paymentClaims: { where: { status: 'PENDING' } },
+        },
+      },
+    },
+    orderBy: { name: 'asc' },
+  });
   return NextResponse.json(clients);
 }
 

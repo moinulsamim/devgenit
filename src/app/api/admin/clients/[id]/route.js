@@ -7,7 +7,17 @@ export async function GET(request, { params }) {
   if (!await requireAdmin()) return unauthorized();
   const { id } = await params;
   const prisma = await getPrisma();
-  const client = await prisma.client.findUnique({ where: { id }, include: { services: { include: { payments: { orderBy: { paidOn: 'desc' } } } } } });
+  const client = await prisma.client.findUnique({
+    where: { id },
+    include: {
+      services: {
+        include: {
+          payments: { orderBy: { paidOn: 'desc' } },
+          paymentClaims: { where: { status: 'PENDING' }, orderBy: { createdAt: 'desc' } },
+        },
+      },
+    },
+  });
   if (!client) return NextResponse.json({ error: 'Client not found' }, { status: 404 });
   return NextResponse.json(client);
 }
