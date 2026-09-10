@@ -89,7 +89,13 @@ export async function proxy(request: NextRequest) {
   if (shouldRewrite && effectivePathname !== pathname) {
     const url = request.nextUrl.clone();
     url.pathname = effectivePathname;
-    return NextResponse.rewrite(url);
+    // Stamp the portal on the rewritten request so server components (root
+    // layout) can tell this is a portal render. Without this, SiteChrome
+    // only sees the visible URL path ('/' on portal subdomains) and wrongly
+    // renders the marketing Navbar/Footer on top of the portal UI.
+    const headers = new Headers(request.headers);
+    headers.set('x-portal', hostPortal as Portal);
+    return NextResponse.rewrite(url, { request: { headers } });
   }
 
   return NextResponse.next();

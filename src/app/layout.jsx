@@ -1,4 +1,5 @@
 import { DM_Sans, Poppins, Work_Sans } from "next/font/google";
+import { headers } from "next/headers";
 import SiteChrome from "../components/SiteChrome";
 import "./globals.css";
 
@@ -31,13 +32,18 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  // The subdomain proxy stamps 'x-portal' onto rewritten requests (e.g.
+  // client.devgenit.com/ → /client/dashboard). usePathname() alone reports
+  // the visible URL ('/'), which made SiteChrome render the marketing
+  // Navbar/Footer on top of the portal — so the portal is passed explicitly.
+  const portal = (await headers()).get("x-portal");
   return (
     <html lang="en">
       <body
         className={`${poppins.variable} ${workSans.variable} ${dmSans.variable} mx-auto relative bg-yeah-primary text-yeah-text poppins-regular pt-2 selection:bg-slate-800 selection:text-pink-400 cursor-default overflow-x-hidden scroll-smooth`}
       >
-        <SiteChrome>{children}</SiteChrome>
+        <SiteChrome portal={portal}>{children}</SiteChrome>
       </body>
     </html>
   );
