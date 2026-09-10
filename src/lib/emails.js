@@ -1,4 +1,4 @@
-const contact = 'connect@devgenit.com | WhatsApp: +8801581491903';
+const contact = 'devgenit@gmail.com | WhatsApp: +8801581491903';
 const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char]));
 
 export function dueSoonEmail({ clientName, serviceName, amount, daysRemaining, dueDate }) {

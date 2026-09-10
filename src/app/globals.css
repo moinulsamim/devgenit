@@ -52,6 +52,12 @@ body {
 .client-page { min-height: 100vh; background: #f6f4ed; color: #1d293b; font-family: var(--font-admin), sans-serif; }
 .client-page .client-rail { background-color: #17243a; background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px); background-size: 16px 16px; }
 .client-page .client-card { background: rgba(255,255,255,.78); border: 1px solid #e5e1d8; border-radius: 12px; box-shadow: 0 8px 24px rgba(60, 55, 38, .045); }
+/* Warning variant of client-card, used for the "Current due" card so it
+   visibly reads as a warning (plain CSS beats Tailwind utilities here
+   because it comes after the utilities layer). */
+.client-page .client-card-warning,
+.client-card.client-card-warning { background: #d97706; border-color: #b45309; color: #fff; box-shadow: 0 8px 24px rgba(180, 83, 9, .25); }
+.client-page .client-card-warning .client-label { color: rgba(255, 255, 255, .85); }
 .client-page .client-content { min-height: 100vh; }
 .client-page .client-muted { color: #778190; }
 .client-page .client-label { color: #72908c; font-size: .58rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }

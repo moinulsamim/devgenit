@@ -27,6 +27,11 @@ enum ClaimStatus {
   REJECTED
 }
 
+enum NotificationChannel {
+  EMAIL
+  WHATSAPP
+}
+
 model Client {
   id            String    @id @default(cuid())
   name          String
@@ -54,8 +59,9 @@ model Service {
   gracePeriodStartedAt DateTime?
   payments             Payment[]
   paymentClaims        PaymentClaim[]
-  createdAt            DateTime      @default(now())
-  updatedAt            DateTime      @updatedAt
+  notificationLogs     NotificationLog[]
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
 
   @@index([clientId])
   @@index([status])
@@ -91,6 +97,23 @@ model PaymentClaim {
 
   @@index([serviceId])
   @@index([status])
+}
+
+model NotificationLog {
+  id                String              @id @default(cuid())
+  service           Service             @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  serviceId         String
+  channel           NotificationChannel
+  daysBeforeDue     Int
+  dueDate           DateTime
+  sentAt            DateTime            @default(now())
+  externalMessageId String?
+  error             String?
+
+  @@unique([serviceId, channel, daysBeforeDue, dueDate])
+  @@index([serviceId])
+  @@index([channel])
+  @@index([sentAt])
 }
 
 model AdminAuditLog {

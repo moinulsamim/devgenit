@@ -38,6 +38,11 @@ export type Payment = Prisma.PaymentModel
  */
 export type PaymentClaim = Prisma.PaymentClaimModel
 /**
+ * Model NotificationLog
+ * 
+ */
+export type NotificationLog = Prisma.NotificationLogModel
+/**
  * Model AdminAuditLog
  * 
  */

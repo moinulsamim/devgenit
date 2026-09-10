@@ -58,8 +58,8 @@ function Contact() {
                       </li>
                       <li className="flex items-center gap-2 text-gray-400">
                         <MdEmail />
-                        <a href="mailto:connect@devgenit.com">
-                          connect@devgenit.com
+                        <a href="mailto:devgenit@gmail.com">
+                          devgenit@gmail.com
                         </a>
                       </li>
                       <li className="flex items-start gap-2 text-gray-400">

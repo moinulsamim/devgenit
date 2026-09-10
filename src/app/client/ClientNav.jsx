@@ -243,7 +243,7 @@ export default function ClientNav({ client }) {
             </p>
 
             <a           
-              href="mailto:connect@devgenit.com"
+              href="mailto:devgenit@gmail.com"
               className="text-[#c9f15e] inline-block mt-3"
             >
               Contact support ↗

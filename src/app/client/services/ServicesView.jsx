@@ -16,6 +16,42 @@ const filters = [
   { key: 'BLOCKED', label: 'Blocked' },
 ];
 
+// Computed directly from nextDueDate rather than relying solely on the
+// stored status field, since that only updates once a day via cron —
+// this makes the red banner appear the instant the due date passes.
+function isPastDue(service) {
+  if (!service.nextDueDate || service.billingCycle === 'NO_RESTRICTION') return false;
+  const due = new Date(service.nextDueDate);
+  due.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return due <= today;
+}
+
+// Live 7-day warning window, matching the notification bell and the
+// dashboard page so every screen agrees with each other.
+function isDueSoon(service) {
+  if (!service.nextDueDate || service.billingCycle === 'NO_RESTRICTION') return false;
+  const due = new Date(service.nextDueDate);
+  due.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const days = Math.ceil((due.getTime() - today.getTime()) / 86400000);
+  return days > 0 && days <= 7;
+}
+
+// Effective status for counting and filtering. Stored status only updates
+// once a day via the cron job, so counting on `service.status` alone showed
+// "Overdue 0" while the red banner and the "! Overdue" badge (both live)
+// said otherwise. A blocked service stays BLOCKED — blocking is a deliberate
+// admin action, not something time can derive.
+function liveStatus(service) {
+  if (service.status === 'BLOCKED') return 'BLOCKED';
+  if (isPastDue(service) || service.status === 'OVERDUE') return 'OVERDUE';
+  if (isDueSoon(service) || service.status === 'DUE_SOON') return 'DUE_SOON';
+  return 'ACTIVE';
+}
+
 function ReportPayment({ service }) {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(String(service.amount));
@@ -57,7 +93,7 @@ function ReportPayment({ service }) {
         onClick={() => setOpen(true)}
         className="mt-4 bg-[#202a3d] text-white text-[11px] font-semibold px-4 py-2 rounded-lg w-full sm:w-auto"
       >
-       Complete the Payment 
+        Payment completed
       </button>
     );
   }
@@ -115,12 +151,14 @@ export default function ServicesView({ services }) {
   const [filter, setFilter] = useState('ALL');
   const [expandedId, setExpandedId] = useState(null);
 
-  const filtered = filter === 'ALL' ? services : services.filter((s) => s.status === filter);
+  const filtered = filter === 'ALL' ? services : services.filter((s) => liveStatus(s) === filter);
 
   const counts = filters.reduce((acc, f) => {
-    acc[f.key] = f.key === 'ALL' ? services.length : services.filter((s) => s.status === f.key).length;
+    acc[f.key] = f.key === 'ALL' ? services.length : services.filter((s) => liveStatus(s) === f.key).length;
     return acc;
   }, {});
+
+  const overdueServices = services.filter(isPastDue);
 
   return (
     <div>
@@ -134,7 +172,15 @@ export default function ServicesView({ services }) {
         </p>
       </div>
 
-      {/* Filter tabs — horizontally scrollable on mobile so they never wrap awkwardly */}
+      {overdueServices.length > 0 && (
+        <div className="mb-5 border-2 border-red-300 bg-red-50 rounded-xl p-4">
+          <p className="text-[10px] uppercase tracking-[.14em] font-bold text-red-700">Payment overdue</p>
+          <p className="text-sm text-red-900 font-semibold mt-1">
+            {overdueServices.map((service) => service.name).join(', ')} {overdueServices.length === 1 ? 'has' : 'have'} an unpaid balance past the due date.
+          </p>
+        </div>
+      )}
+
       <div className="flex gap-2 overflow-x-auto pb-2 mb-5 -mx-4 px-4 sm:mx-0 sm:px-0">
         {filters.map((f) => (
           <button
@@ -170,11 +216,12 @@ export default function ServicesView({ services }) {
           {filtered.map((service) => {
             const expanded = expandedId === service.id;
             const payments = service.payments || [];
-            const needsAttention = ['DUE_SOON', 'OVERDUE', 'BLOCKED'].includes(service.status);
+            const overdue = isPastDue(service);
+            const dueSoon = (isDueSoon(service) || service.status === 'DUE_SOON') && !overdue;
             const canReportPayment = service.billingCycle !== 'NO_RESTRICTION';
 
             return (
-              <div key={service.id} className="client-card overflow-hidden">
+              <div key={service.id} className={`client-card overflow-hidden ${overdue ? 'border-2 border-red-300' : ''}`}>
                 <button
                   type="button"
                   onClick={() => setExpandedId(expanded ? null : service.id)}
@@ -192,6 +239,11 @@ export default function ServicesView({ services }) {
                       <span className={`px-2 py-0.5 rounded-full text-[9px] font-semibold shrink-0 ${statusStyles[service.status]}`}>
                         {statusLabels[service.status]}
                       </span>
+                      {overdue && (
+                        <span className="px-2 py-0.5 rounded-full text-[9px] font-bold shrink-0 bg-red-600 text-white">
+                          ! Overdue
+                        </span>
+                      )}
                     </div>
                     <p className="client-muted text-[10px] mt-1">
                       {cycleLabels[service.billingCycle]} · Next due {date(service.nextDueDate)}
@@ -229,10 +281,17 @@ export default function ServicesView({ services }) {
                       </div>
                     </div>
 
-                    {needsAttention && (
+                    {overdue && (
+                      <div className="mt-4 border-2 border-red-300 bg-red-50 rounded-lg p-3 text-[10px] text-red-800">
+                        <strong>This service is overdue.</strong> Please make your payment as soon as possible to avoid interruption. Contact{' '}
+                        <a href="mailto:devgenit@gmail.com" className="underline">devgenit@gmail.com</a> if you have questions.
+                      </div>
+                    )}
+
+                    {!overdue && dueSoon && (
                       <div className="mt-4 border border-[#f0d9c9] bg-[#fff7ee] rounded-lg p-3 text-[10px] text-[#85583d]">
-                        This service needs attention. Contact{' '}
-                        <a href="mailto:connect@devgenit.com" className="underline">connect@devgenit.com</a> for help.
+                        This service is coming due soon. Contact{' '}
+                        <a href="mailto:devgenit@gmail.com" className="underline">devgenit@gmail.com</a> for help.
                       </div>
                     )}
 
@@ -252,6 +311,7 @@ export default function ServicesView({ services }) {
                           ))}
                         </div>
                       )}
+                        
                       <a
                         href="/client/payments"
                         className="inline-block mt-3 text-[10px] font-semibold text-[#3d9d91]"

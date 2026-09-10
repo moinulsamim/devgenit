@@ -55,6 +55,7 @@ export const ModelName = {
   Service: 'Service',
   Payment: 'Payment',
   PaymentClaim: 'PaymentClaim',
+  NotificationLog: 'NotificationLog',
   AdminAuditLog: 'AdminAuditLog'
 } as const
 
@@ -136,6 +137,20 @@ export const PaymentClaimScalarFieldEnum = {
 } as const
 
 export type PaymentClaimScalarFieldEnum = (typeof PaymentClaimScalarFieldEnum)[keyof typeof PaymentClaimScalarFieldEnum]
+
+
+export const NotificationLogScalarFieldEnum = {
+  id: 'id',
+  serviceId: 'serviceId',
+  channel: 'channel',
+  daysBeforeDue: 'daysBeforeDue',
+  dueDate: 'dueDate',
+  sentAt: 'sentAt',
+  externalMessageId: 'externalMessageId',
+  error: 'error'
+} as const
+
+export type NotificationLogScalarFieldEnum = (typeof NotificationLogScalarFieldEnum)[keyof typeof NotificationLogScalarFieldEnum]
 
 
 export const AdminAuditLogScalarFieldEnum = {
